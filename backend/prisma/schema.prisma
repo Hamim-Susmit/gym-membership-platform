@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MEMBER
+  TRAINER
+  LOCATION_ADMIN
+  SUPER_ADMIN
+}
+
+enum MembershipStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+}
+
+enum CheckInMethod {
+  QR
+  FRONT_DESK
+  MANUAL
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id                String              @id @default(uuid())
+  email             String              @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  role              Role                @default(MEMBER)
+  phoneNumber       String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  membership        MembershipSubscription?
+  trainerProfile    TrainerProfile?
+  memberProgressNotes  ClientProgressNote[] @relation("MemberProgressNotes")
+  trainerProgressNotes ClientProgressNote[] @relation("TrainerProgressNotes")
+  trainerSessions   TrainerSession[]    @relation("TrainerSessions")
+  bookings          TrainerSession[]    @relation("MemberBookings")
+  checkIns          CheckIn[]
+  auditLogs         AuditLog[]
+}
+
+model GymLocation {
+  id          String          @id @default(uuid())
+  name        String
+  addressLine String
+  city        String
+  state       String
+  postalCode  String
+  country     String
+  timezone    String
+  amenities   String[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  checkIns    CheckIn[]
+  classes     ClassSchedule[]
+  trainers    TrainerProfile[]
+  memberships MembershipSubscription[]
+}
+
+model MembershipPlan {
+  id          String                   @id @default(uuid())
+  name        String
+  description String
+  tier        String
+  perks       String[]
+  priceCents  Int
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
+  subscriptions MembershipSubscription[]
+}
+
+model MembershipSubscription {
+  id          String            @id @default(uuid())
+  userId      String            @unique
+  planId      String
+  locationId  String
+  status      MembershipStatus  @default(ACTIVE)
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id])
+  plan        MembershipPlan    @relation(fields: [planId], references: [id])
+  location    GymLocation       @relation(fields: [locationId], references: [id])
+  payments    PaymentLogEntry[]
+}
+
+model CheckIn {
+  id          String        @id @default(uuid())
+  userId      String
+  locationId  String
+  method      CheckInMethod @default(QR)
+  checkedInAt DateTime      @default(now())
+  user        User          @relation(fields: [userId], references: [id])
+  location    GymLocation   @relation(fields: [locationId], references: [id])
+}
+
+model ClassSchedule {
+  id          String        @id @default(uuid())
+  locationId  String
+  title       String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  capacity    Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  location    GymLocation   @relation(fields: [locationId], references: [id])
+}
+
+model TrainerProfile {
+  id          String        @id @default(uuid())
+  userId      String        @unique
+  locationId  String
+  bio         String
+  specialties String[]
+  availability String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+  location    GymLocation   @relation(fields: [locationId], references: [id])
+}
+
+model TrainerSession {
+  id          String      @id @default(uuid())
+  trainerId   String
+  memberId    String
+  scheduledAt DateTime
+  durationMin Int
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  trainer     User        @relation("TrainerSessions", fields: [trainerId], references: [id])
+  member      User        @relation("MemberBookings", fields: [memberId], references: [id])
+}
+
+model ClientProgressNote {
+  id          String      @id @default(uuid())
+  memberId    String
+  trainerId   String
+  note        String
+  createdAt   DateTime    @default(now())
+  member      User        @relation("MemberProgressNotes", fields: [memberId], references: [id])
+  trainer     User        @relation("TrainerProgressNotes", fields: [trainerId], references: [id])
+}
+
+model PaymentLogEntry {
+  id              String         @id @default(uuid())
+  subscriptionId  String
+  amountCents     Int
+  currency        String
+  status          PaymentStatus  @default(PENDING)
+  paidAt          DateTime?
+  createdAt       DateTime       @default(now())
+  subscription    MembershipSubscription @relation(fields: [subscriptionId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  details   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
