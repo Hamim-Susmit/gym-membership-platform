@@ -21,8 +21,18 @@ userRoutes.get(
         email: true,
         firstName: true,
         lastName: true,
-        role: true,
-        phoneNumber: true
+        phone: true,
+        isActive: true,
+        roles: {
+          select: {
+            locationId: true,
+            role: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
       }
     });
 
@@ -30,6 +40,16 @@ userRoutes.get(
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json({ user });
+    const roles = user.roles.map((userRole) => ({
+      name: userRole.role.name,
+      locationId: userRole.locationId
+    }));
+
+    return res.status(200).json({
+      user: {
+        ...user,
+        roles
+      }
+    });
   })
 );

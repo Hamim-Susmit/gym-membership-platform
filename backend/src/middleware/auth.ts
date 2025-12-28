@@ -2,9 +2,14 @@ import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
 
+export type AuthRole = {
+  name: string;
+  locationId?: string | null;
+};
+
 export type AuthPayload = {
   userId: string;
-  role: string;
+  roles: AuthRole[];
 };
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
