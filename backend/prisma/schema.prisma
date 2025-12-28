@@ -284,6 +284,13 @@ model Notification {
   user      User             @relation(fields: [userId], references: [id])
 }
 
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
 model AuditLog {
   id         String   @id @default(uuid())
   actorUserId String
