@@ -3,6 +3,7 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api
 export const endpoints = {
   login: "/auth/login",
   refresh: "/auth/refresh",
+  register: "/auth/register",
   me: "/me",
   locations: "/locations",
   classes: "/classes",
@@ -14,6 +15,6 @@ export const endpoints = {
   trainerSessions: "/trainer/sessions",
   notifications: "/notifications",
   announcements: "/admin/announcements",
-  adminStats: "/reports/admin-stats",
+  adminStats: "/admin/reports/admin-stats",
   reports: "/reports"
 };

@@ -2,18 +2,43 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button";
+import { apiClient } from "@/api/client";
+import { endpoints } from "@/api/endpoints";
+import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 
 export default function RegisterPage() {
   const { notify } = useToast();
+  const router = useRouter();
+  const { login } = useAuth();
+  const [formState, setFormState] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
-    notify("Registration queued", "Connect this form to /auth/register when ready.");
-    setIsSubmitting(false);
+
+    try {
+      await apiClient.post(endpoints.register, {
+        firstName: formState.firstName,
+        lastName: formState.lastName,
+        email: formState.email,
+        password: formState.password
+      });
+      await login(formState.email, formState.password);
+      router.replace("/member/dashboard");
+    } catch (error) {
+      notify("Registration failed", error instanceof Error ? error.message : "Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -27,19 +52,41 @@ export default function RegisterPage() {
         <div className="grid gap-4 md:grid-cols-2">
           <label className="block text-xs font-semibold uppercase text-slate/50">
             First name
-            <input className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              value={formState.firstName}
+              onChange={(event) => setFormState((prev) => ({ ...prev, firstName: event.target.value }))}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
           <label className="block text-xs font-semibold uppercase text-slate/50">
             Last name
-            <input className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              value={formState.lastName}
+              onChange={(event) => setFormState((prev) => ({ ...prev, lastName: event.target.value }))}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
           <label className="md:col-span-2 block text-xs font-semibold uppercase text-slate/50">
             Email
-            <input type="email" className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              type="email"
+              value={formState.email}
+              onChange={(event) => setFormState((prev) => ({ ...prev, email: event.target.value }))}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
           <label className="md:col-span-2 block text-xs font-semibold uppercase text-slate/50">
             Password
-            <input type="password" className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              type="password"
+              value={formState.password}
+              onChange={(event) => setFormState((prev) => ({ ...prev, password: event.target.value }))}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>

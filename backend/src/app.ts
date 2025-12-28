@@ -12,6 +12,7 @@ import { trainerRoutes } from "./routes/trainerRoutes.js";
 import { notificationRoutes } from "./routes/notificationRoutes.js";
 import { adminRoutes } from "./routes/adminRoutes.js";
 import { memberRoutes } from "./routes/memberRoutes.js";
+import { trainerAdminRoutes } from "./routes/trainerAdminRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 export const app = express();
@@ -38,5 +39,6 @@ app.use("/trainer", trainerRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/admin", adminRoutes);
 app.use("/members", memberRoutes);
+app.use("/trainers", trainerAdminRoutes);
 
 app.use(errorHandler);

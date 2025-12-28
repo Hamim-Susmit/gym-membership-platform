@@ -33,6 +33,7 @@ Premium-grade Node.js + Express API with Prisma/PostgreSQL.
 - `POST /admin/announcements`
 - `GET /admin/reports/admin-stats`
 - `GET /members`
+- `GET /trainers`
 
 ## Roles
 
