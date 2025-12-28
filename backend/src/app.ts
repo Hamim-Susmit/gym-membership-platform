@@ -17,6 +17,10 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
+app.get("/health/ready", (_req, res) => {
+  res.status(200).json({ status: "ready" });
+});
+
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/locations", locationRoutes);

@@ -13,8 +13,11 @@ Premium-grade Node.js + Express API with Prisma/PostgreSQL.
 ## Key Endpoints
 
 - `GET /health`
+- `GET /health/ready`
 - `POST /auth/register`
 - `POST /auth/login`
+- `POST /auth/refresh`
+- `POST /auth/logout`
 - `GET /users/me`
 - `GET /locations`
 

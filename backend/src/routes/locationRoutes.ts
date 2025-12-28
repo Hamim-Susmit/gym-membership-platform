@@ -7,17 +7,20 @@ export const locationRoutes = Router();
 locationRoutes.get(
   "/",
   asyncHandler(async (_req, res) => {
-    const locations = await prisma.gymLocation.findMany({
+    const locations = await prisma.location.findMany({
       select: {
         id: true,
         name: true,
-        addressLine: true,
+        address: true,
         city: true,
         state: true,
         postalCode: true,
         country: true,
         timezone: true,
-        amenities: true
+        phone: true,
+        amenities: true,
+        openingHours: true,
+        isActive: true
       }
     });
     res.status(200).json({ locations });

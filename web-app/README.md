@@ -1,5 +1,23 @@
 # Web App
 
-Next.js (React) member, trainer, and admin dashboards.
+Premium Next.js (App Router) dashboard for members, trainers, and admins.
 
-Planned: Tailwind CSS design system, role-based navigation, premium UI components.
+## Structure
+
+```
+src/
+  app/
+  components/
+  context/
+  hooks/
+  layouts/
+  types/
+  utils/
+```
+
+## Running locally
+
+1. `npm install`
+2. `npm run dev`
+
+Update `src/api/endpoints.ts` with your API base URL.
