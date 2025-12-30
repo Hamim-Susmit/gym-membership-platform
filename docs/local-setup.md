@@ -14,3 +14,13 @@ Notes:
 - Use `SMOKE_API_URL` or `NEXT_PUBLIC_API_URL` to point the frontend to a running backend.
 - A simple smoke test is provided at `scripts/smoke-test.js` (`make smoke-test`).
 - There is a manual GitHub Action `e2e-smoke-test` (workflow_dispatch) that can be run with `SMOKE_API_URL` set as a secret.
+
+**Automated CI smoke test**
+
+An automated CI workflow is available and will run the smoke test on pushes to `main` and `dev` only when the `SMOKE_API_URL` repository secret is set. This ensures tests run against an approved test endpoint (do not set this to a production URL).
+
+To enable automated smoke tests:
+
+1. Add the repository secret `SMOKE_API_URL` with the URL of your test backend (e.g. `https://test-api.example.com`).
+2. The CI job `ci-smoke-test` will run automatically on `push` to `main`/`dev` and is also triggerable manually via the Actions UI.
+
