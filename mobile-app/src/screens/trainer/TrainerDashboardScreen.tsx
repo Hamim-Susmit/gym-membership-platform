@@ -13,7 +13,7 @@ export const TrainerDashboardScreen = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Trainer dashboard</Text>
-      <Text style={styles.subtitle}>Today's sessions and client touchpoints.</Text>
+      <Text style={styles.subtitle}>Today&apos;s sessions and client touchpoints.</Text>
       <Card>
         {sessionsQuery.isLoading ? (
           <LoadingState label="Loading sessions" />
