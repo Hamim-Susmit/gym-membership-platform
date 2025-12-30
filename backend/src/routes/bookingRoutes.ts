@@ -104,6 +104,11 @@ bookingRoutes.patch(
       return res.status(400).json({ message: "status is required" });
     }
 
+    const allowed = ["BOOKED", "CANCELLED", "ATTENDED", "NO_SHOW"] as const;
+    if (!allowed.includes(status as any)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
     const booking = await prisma.classBooking.findUnique({ where: { id: bookingId } });
     if (!booking || booking.userId !== userId) {
       return res.status(404).json({ message: "Booking not found" });
@@ -111,7 +116,7 @@ bookingRoutes.patch(
 
     const updated = await prisma.classBooking.update({
       where: { id: bookingId },
-      data: { status }
+      data: { status: status as any }
     });
 
     await prisma.auditLog.create({

@@ -4,16 +4,35 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { useToast } from "@/context/ToastContext";
+import { useAuth } from "@/context/AuthContext";
+import { apiClient } from "@/api/client";
+import { endpoints } from "@/api/endpoints";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const { notify } = useToast();
+  const { login } = useAuth();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
-    notify("Registration queued", "Connect this form to /auth/register when ready.");
-    setIsSubmitting(false);
+    try {
+      await apiClient.post(endpoints.register, { firstName, lastName, email, password });
+      // automatically login after successful registration
+      await login(email, password);
+      notify("Account created", "Welcome! You are now signed in.");
+      router.push("/");
+    } catch (err) {
+      notify("Registration failed", err instanceof Error ? err.message : "Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -27,19 +46,41 @@ export default function RegisterPage() {
         <div className="grid gap-4 md:grid-cols-2">
           <label className="block text-xs font-semibold uppercase text-slate/50">
             First name
-            <input className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
           <label className="block text-xs font-semibold uppercase text-slate/50">
             Last name
-            <input className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
           <label className="md:col-span-2 block text-xs font-semibold uppercase text-slate/50">
             Email
-            <input type="email" className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
           <label className="md:col-span-2 block text-xs font-semibold uppercase text-slate/50">
             Password
-            <input type="password" className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm" required />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-slate/10 px-4 py-3 text-sm"
+              required
+            />
           </label>
         </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
