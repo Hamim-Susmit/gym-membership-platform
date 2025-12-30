@@ -14,3 +14,7 @@ build/
 .vscode/
 .DS_Store
 .idea/
+
+# Per-project build outputs
+web-app/.next/
+mobile-app/.expo/
