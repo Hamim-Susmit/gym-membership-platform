@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Backend — install, typecheck, build
+        run: |
+          cd backend
+          npm ci
+          npx -y -p typescript tsc -p tsconfig.json --noEmit
+          npm run build
+
+      - name: Web — install, typecheck, build, lint
+        run: |
+          cd web-app
+          npm ci
+          npx -y -p typescript tsc -p tsconfig.json --noEmit
+          npm run build
+          npm run lint
+
+      - name: Mobile — install, typecheck, lint
+        run: |
+          cd mobile-app
+          npm ci
+          npx -y -p typescript tsc -p tsconfig.json --noEmit
+          npm run lint
+
+      - name: Final message
+        run: echo "TypeScript checks and linting completed for backend, web, and mobile"
