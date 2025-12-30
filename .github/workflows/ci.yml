@@ -6,45 +6,107 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  checks:
+  setup:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
+    outputs:
+      node-version: ${{ steps.node-version.outputs.node-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
+        id: node-version
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
 
-      - name: Install root dependencies
-        run: npm ci
+  backend:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Backend — install, typecheck, build
+      - name: Restore npm cache (backend)
+        uses: actions/cache@v4
+        with:
+          path: backend/node_modules
+          key: backend-npm-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: |
+            backend-npm-
+
+      - name: Install backend deps
         run: |
           cd backend
           npm ci
+
+      - name: Backend — typecheck & build
+        run: |
+          cd backend
           npx -y -p typescript tsc -p tsconfig.json --noEmit
           npm run build
 
-      - name: Web — install, typecheck, build, lint
+  web:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore npm cache (web)
+        uses: actions/cache@v4
+        with:
+          path: web-app/node_modules
+          key: web-npm-${{ hashFiles('web-app/package-lock.json') }}
+          restore-keys: |
+            web-npm-
+
+      - name: Install web deps
         run: |
           cd web-app
           npm ci
+
+      - name: Web — typecheck, build & lint
+        run: |
+          cd web-app
           npx -y -p typescript tsc -p tsconfig.json --noEmit
           npm run build
           npm run lint
 
-      - name: Mobile — install, typecheck, lint
+  mobile:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore npm cache (mobile)
+        uses: actions/cache@v4
+        with:
+          path: mobile-app/node_modules
+          key: mobile-npm-${{ hashFiles('mobile-app/package-lock.json') }}
+          restore-keys: |
+            mobile-npm-
+
+      - name: Install mobile deps
         run: |
           cd mobile-app
           npm ci
+
+      - name: Mobile — typecheck & lint
+        run: |
+          cd mobile-app
           npx -y -p typescript tsc -p tsconfig.json --noEmit
           npm run lint
 
+  summary:
+    needs: [backend, web, mobile]
+    runs-on: ubuntu-latest
+    steps:
       - name: Final message
         run: echo "TypeScript checks and linting completed for backend, web, and mobile"
