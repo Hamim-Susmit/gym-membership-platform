@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { BarCodeGenerator } from "expo-barcode-generator";
 import { Card } from "../../components/Card";
 import { useAuth } from "../../context/AuthContext";
 
@@ -14,11 +13,10 @@ export const MembershipCardScreen = () => {
       <Text style={styles.subtitle}>Scan this QR at any location for premium access.</Text>
       <Card style={styles.card}>
         <Text style={styles.name}>{user?.firstName} {user?.lastName}</Text>
-        <BarCodeGenerator
-          value={memberId}
-          style={styles.qr}
-          options={{ background: "#ffffff", foreground: "#111827" }}
-        />
+        {/* QR placeholder (barcode generator removed from dependencies) */}
+        <View style={styles.qrPlaceholder}>
+          <Text style={styles.qrText}>{memberId}</Text>
+        </View>
         <Text style={styles.memberId}>ID: {memberId}</Text>
       </Card>
     </View>
@@ -51,9 +49,17 @@ const styles = StyleSheet.create({
     color: "#111827",
     marginBottom: 12
   },
-  qr: {
+  qrPlaceholder: {
     width: 200,
-    height: 200
+    height: 200,
+    borderRadius: 8,
+    backgroundColor: "#F3F4F6",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  qrText: {
+    fontSize: 12,
+    color: "#111827"
   },
   memberId: {
     marginTop: 12,

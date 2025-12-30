@@ -21,7 +21,7 @@ trainerRoutes.get(
       select: { clientId: true }
     });
 
-    const clientIds = Array.from(new Set(sessions.map((session) => session.clientId)));
+    const clientIds = Array.from(new Set(sessions.map((session: { clientId: string }) => session.clientId)));
 
     const clients = await prisma.user.findMany({
       where: { id: { in: clientIds } },

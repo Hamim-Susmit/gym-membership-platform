@@ -33,7 +33,7 @@ const navSections = {
 
 export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, logout } = useAuth();
-  const roles = user?.roles.map((role) => role.name) ?? [];
+  const roles = user?.roles.map((role: any) => role.name) ?? [];
   const isTrainer = roles.includes("TRAINER");
   const isAdmin = roles.includes("LOCATION_ADMIN") || roles.includes("SUPER_ADMIN");
 

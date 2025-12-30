@@ -18,7 +18,7 @@ export default function ProfilePage() {
         <Card>
           <p className="text-lg font-semibold text-slate">{user ? formatName(user.firstName, user.lastName) : "Member"}</p>
           <p className="mt-2 text-sm text-slate/60">{user?.email}</p>
-          <p className="mt-2 text-xs text-slate/50">Roles: {user?.roles.map((role) => role.name).join(", ")}</p>
+          <p className="mt-2 text-xs text-slate/50">Roles: {user?.roles.map((role: any) => role.name).join(", ")}</p>
         </Card>
         <Card>
           <Button variant="secondary" onClick={logout}>

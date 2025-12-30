@@ -80,9 +80,9 @@ adminRoutes.get(
       where: { startTime: { gte: since } },
       select: { id: true, capacity: true }
     });
-    const classIds = classes.map((item) => item.id);
+    const classIds = classes.map((item: { id: string }) => item.id);
     const bookingsCount = await prisma.classBooking.count({ where: { classId: { in: classIds } } });
-    const capacitySum = classes.reduce((sum, item) => sum + item.capacity, 0);
+    const capacitySum = classes.reduce((sum: number, item: { capacity: number }) => sum + item.capacity, 0);
     const classOccupancy = capacitySum ? Math.round((bookingsCount / capacitySum) * 100) : 0;
 
     const trainerRole = await prisma.role.findUnique({ where: { name: "TRAINER" } });

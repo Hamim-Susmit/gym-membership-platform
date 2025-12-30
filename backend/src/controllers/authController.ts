@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { type SignOptions, type Secret } from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "../config/env.js";
 import { prisma } from "../utils/prisma.js";
@@ -29,13 +29,13 @@ const refreshSchema = z.object({
 });
 
 const createAccessToken = (userId: string, roles: { name: string; locationId?: string | null }[]) => {
-  return jwt.sign({ userId, roles }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
+  return jwt.sign({ userId, roles }, env.JWT_SECRET as Secret, { expiresIn: env.JWT_EXPIRES_IN } as SignOptions);
 };
 
 const createRefreshToken = (userId: string, roles: { name: string; locationId?: string | null }[]) => {
-  return jwt.sign({ userId, roles }, env.JWT_REFRESH_SECRET, {
+  return jwt.sign({ userId, roles }, env.JWT_REFRESH_SECRET as Secret, {
     expiresIn: env.JWT_REFRESH_EXPIRES_IN
-  });
+  } as SignOptions);
 };
 
 const ensureRole = async (roleName: string) => {
@@ -47,7 +47,7 @@ const ensureRole = async (roleName: string) => {
 };
 
 const mapRoles = (userRoles: { role: { name: string }; locationId: string | null }[]) => {
-  return userRoles.map((userRole) => ({
+  return userRoles.map((userRole: { role: { name: string }; locationId: string | null }) => ({
     name: userRole.role.name,
     locationId: userRole.locationId
   }));
@@ -140,7 +140,7 @@ export const login = async (payload: unknown) => {
   }
 
   const roles = mapRoles(
-    user.roles.map((userRole) => ({ role: userRole.role, locationId: userRole.locationId }))
+    user.roles.map((userRole: any) => ({ role: userRole.role, locationId: userRole.locationId }))
   );
 
   await prisma.auditLog.create({

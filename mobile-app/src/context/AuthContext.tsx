@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { apiClient, setAuthTokens, setRefreshHandler } from "../api/client";
 import { endpoints } from "../api/endpoints";
-import type { AuthTokens, RoleAssignment, UserProfile } from "../types";
+import type { AuthTokens, RoleAssignment, UserProfile } from "@/types";
 
 const STORAGE_KEY = "gym.auth.tokens";
 

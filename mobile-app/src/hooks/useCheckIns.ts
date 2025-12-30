@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../api/client";
 import { endpoints } from "../api/endpoints";
-import type { CheckIn } from "../types";
+import type { CheckIn } from "@/types";
 
 export const useCheckIns = () => {
   return useQuery({

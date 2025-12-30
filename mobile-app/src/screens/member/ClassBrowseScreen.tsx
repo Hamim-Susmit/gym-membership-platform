@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import { Card } from "../../components/Card";
 import { ListItem } from "../../components/ListItem";
 import { LoadingState } from "../../components/LoadingState";

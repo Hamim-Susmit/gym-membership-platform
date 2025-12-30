@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,17 +19,50 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/api/*": ["src/api/*"],
-      "@/components/*": ["src/components/*"],
-      "@/context/*": ["src/context/*"],
-      "@/features/*": ["src/features/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/layouts/*": ["src/layouts/*"],
-      "@/lib/*": ["src/lib/*"],
-      "@/types/*": ["src/types/*"],
-      "@/utils/*": ["src/utils/*"]
-    }
+      "@/api/*": [
+        "src/api/*"
+      ],
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@/context/*": [
+        "src/context/*"
+      ],
+      "@/features/*": [
+        "src/features/*"
+      ],
+      "@/hooks/*": [
+        "src/hooks/*"
+      ],
+      "@/layouts/*": [
+        "src/layouts/*"
+      ],
+      "@/lib/*": [
+        "src/lib/*"
+      ],
+      "@/types/*": [
+        "src/types/*"
+      ],
+      "@/types": [
+        "src/types"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

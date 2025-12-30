@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const [tokens, setTokens] = useState<AuthTokens | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const roles = user?.roles ?? [];
+  const roles = useMemo(() => user?.roles ?? [], [user?.roles]);
 
   const refreshSession = useCallback(async () => {
     if (!tokens?.refreshToken) {
