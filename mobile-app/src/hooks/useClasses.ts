@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../api/client";
 import { endpoints } from "../api/endpoints";
-import type { ClassItem } from "../types";
+import type { ClassItem } from "@/types";
 
 export const useClasses = (locationId?: string, date?: string) => {
   return useQuery({

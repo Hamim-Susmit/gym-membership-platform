@@ -31,7 +31,7 @@ trainerAdminRoutes.get(
       }
     });
 
-    const trainers = trainerUsers.map((item) => item.user);
+    const trainers = trainerUsers.map((item: { user: unknown }) => item.user);
 
     res.status(200).json({ trainers });
   })

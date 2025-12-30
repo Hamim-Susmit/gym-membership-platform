@@ -7,8 +7,9 @@ type BadgeProps = {
 };
 
 export const Badge: React.FC<BadgeProps> = ({ label, tone = "neutral" }) => {
+  const toneStyle = tone === "neutral" ? styles.neutral : tone === "success" ? styles.success : styles.warning;
   return (
-    <View style={[styles.base, styles[tone]]}>
+    <View style={[styles.base, toneStyle]}>
       <Text style={styles.text}>{label}</Text>
     </View>
   );

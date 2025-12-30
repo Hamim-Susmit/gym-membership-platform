@@ -29,7 +29,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
 export const RoleGuard = ({ roles, children }: { roles: string[]; children: React.ReactNode }) => {
   const { user } = useAuth();
-  const roleNames = user?.roles.map((role) => role.name) ?? [];
+  const roleNames = user?.roles.map((role: any) => role.name) ?? [];
   const allowed = roles.some((role) => roleNames.includes(role));
 
   if (!allowed) {

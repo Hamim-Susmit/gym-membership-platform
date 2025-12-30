@@ -7,7 +7,7 @@ import { Card } from "../../components/Card";
 import { ListItem } from "../../components/ListItem";
 import { LoadingState } from "../../components/LoadingState";
 import { EmptyState } from "../../components/EmptyState";
-import type { TrainerClient } from "../../types";
+import type { TrainerClient } from "@/types";
 
 export const TrainerClientsScreen = () => {
   const clientsQuery = useQuery({

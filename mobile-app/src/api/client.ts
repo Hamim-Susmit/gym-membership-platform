@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "./endpoints";
-import type { AuthTokens } from "../types";
+import type { AuthTokens } from "@/types";
 
 let authTokens: AuthTokens | null = null;
 let onRefresh: (() => Promise<AuthTokens | null>) | null = null;

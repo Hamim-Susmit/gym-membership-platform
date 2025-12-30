@@ -12,5 +12,7 @@ export const endpoints = {
   trainers: "/trainers",
   trainerSessions: "/trainer/sessions",
   announcements: "/admin/announcements",
-  reports: "/reports"
+  reports: "/reports",
+  notifications: "/notifications",
+  trainerClients: "/trainer/clients"
 };

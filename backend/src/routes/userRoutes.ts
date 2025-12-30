@@ -40,7 +40,7 @@ userRoutes.get(
       return res.status(404).json({ message: "User not found" });
     }
 
-    const roles = user.roles.map((userRole) => ({
+    const roles = user.roles.map((userRole: { role: { name: string }; locationId: string | null }) => ({
       name: userRole.role.name,
       locationId: userRole.locationId
     }));

@@ -2,6 +2,7 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type ListItemProps = {
+  key?: string;
   title: string;
   subtitle?: string;
   trailing?: string;

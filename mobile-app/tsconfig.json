@@ -1,7 +1,14 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "esnext"],
+    "jsx": "react-native",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@/api/*": ["src/api/*"],
@@ -11,6 +18,7 @@
       "@/navigation/*": ["src/navigation/*"],
       "@/screens/*": ["src/screens/*"],
       "@/types/*": ["src/types/*"],
+      "@/types": ["src/types"],
       "@/utils/*": ["src/utils/*"]
     }
   },
