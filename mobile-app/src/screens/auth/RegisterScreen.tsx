@@ -3,9 +3,6 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Button } from "../../components/Button";
 import { Card } from "../../components/Card";
 import { useToast } from "../../hooks/useToast";
-import { apiClient } from "../../api/client";
-import { endpoints } from "../../api/endpoints";
-import { useAuth } from "../../context/AuthContext";
 import type { AuthStackParamList } from "../../navigation/authStack";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -16,20 +13,11 @@ export const RegisterScreen: React.FC<NativeStackScreenProps<AuthStackParamList,
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
-  const { login } = useAuth();
 
   const handleRegister = async () => {
     setIsSubmitting(true);
     try {
-      await apiClient.post(endpoints.register, {
-        firstName,
-        lastName,
-        email,
-        password
-      });
-      await login(email, password);
-    } catch (error) {
-      toast("Registration failed", error instanceof Error ? error.message : "Please try again.");
+      toast("Registration pending", "Connect this screen to /auth/register when ready.");
     } finally {
       setIsSubmitting(false);
     }

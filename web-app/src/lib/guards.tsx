@@ -1,19 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Skeleton } from "@/components/Skeleton";
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.replace("/auth/login");
-    }
-  }, [isLoading, router, user]);
 
   if (isLoading) {
     return (
@@ -25,7 +17,11 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!user) {
-    return null;
+    return (
+      <div className="rounded-2xl bg-white p-6 shadow-sm">
+        <p className="text-sm text-slate">Please log in to access this area.</p>
+      </div>
+    );
   }
 
   return <>{children}</>;

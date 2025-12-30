@@ -1,36 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-
-const resolveLanding = (roles: { name: string }[]) => {
-  const roleNames = roles.map((role) => role.name);
-  if (roleNames.includes("SUPER_ADMIN") || roleNames.includes("LOCATION_ADMIN")) {
-    return "/admin/dashboard";
-  }
-  if (roleNames.includes("TRAINER")) {
-    return "/trainer/dashboard";
-  }
-  return "/member/dashboard";
-};
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, user } = useAuth();
+  const { login } = useAuth();
   const { notify } = useToast();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.replace(resolveLanding(user.roles));
-    }
-  }, [router, user]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

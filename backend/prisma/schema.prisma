@@ -65,10 +65,7 @@ model User {
   trainerProfile TrainerProfile?
   trainerSessions TrainerSession[] @relation("TrainerSessions")
   clientSessions  TrainerSession[] @relation("ClientSessions")
-  classesTeaching Class[] @relation("TrainerClasses")
-  classBookings   ClassBooking[]
-  trainerWorkoutPlans WorkoutPlan[] @relation("TrainerWorkoutPlans")
-  clientWorkoutPlans  WorkoutPlan[] @relation("ClientWorkoutPlans")
+  workoutPlans    WorkoutPlan[]
   sessionNotes    SessionNote[]
   notifications   Notification[]
   auditLogs       AuditLog[] @relation("AuditActor")
@@ -116,7 +113,6 @@ model Location {
   subscriptions Subscription[]
   trainerLinks TrainerLocation[]
   adminRoles   UserRole[]
-  trainerSessions TrainerSession[]
 }
 
 model MembershipPlan {
@@ -182,7 +178,7 @@ model Class {
   updatedAt      DateTime    @updatedAt
   location       Location    @relation(fields: [locationId], references: [id])
   classType      ClassType?  @relation(fields: [classTypeId], references: [id])
-  trainer        User        @relation("TrainerClasses", fields: [trainerId], references: [id])
+  trainer        User        @relation(fields: [trainerId], references: [id])
   bookings       ClassBooking[]
 }
 
@@ -249,8 +245,8 @@ model WorkoutPlan {
   structure   Json
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  trainer     User     @relation("TrainerWorkoutPlans", fields: [trainerId], references: [id])
-  client      User     @relation("ClientWorkoutPlans", fields: [clientId], references: [id])
+  trainer     User     @relation(fields: [trainerId], references: [id])
+  client      User     @relation(fields: [clientId], references: [id])
 }
 
 model SessionNote {
@@ -286,13 +282,6 @@ model Notification {
   readAt    DateTime?
   createdAt DateTime         @default(now())
   user      User             @relation(fields: [userId], references: [id])
-}
-
-model Announcement {
-  id        String   @id @default(uuid())
-  title     String
-  message   String
-  createdAt DateTime @default(now())
 }
 
 model AuditLog {
