@@ -1,6 +1,5 @@
 "use client";
 
-import { QRCodeCanvas } from "qrcode.react";
 import { Card } from "@/components/Card";
 import { PageHeader } from "@/components/PageHeader";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
@@ -17,7 +16,9 @@ export default function MemberCardPage() {
         <PageHeader title="Digital membership card" subtitle="Scan at check-in for instant access." />
         <Card>
           <div className="flex flex-col items-center gap-4">
-            <QRCodeCanvas value={memberId} size={160} bgColor="#F5F7FA" fgColor="#0F1115" />
+            <div className="flex h-40 w-40 items-center justify-center rounded-2xl border border-dashed border-slate/30 bg-slate/5">
+              <span className="text-xs uppercase tracking-widest text-slate/40">QR</span>
+            </div>
             <p className="text-sm text-slate">Member ID: {memberId}</p>
           </div>
         </Card>

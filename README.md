@@ -1,4 +1,4 @@
-# Gym Membership Platform — Phase 1 MVP
+# Gym Membership Platform
 
 Monorepo for Web + Mobile apps with a shared backend.
 Members and Staff can use both platforms. Phase-1 includes QR check-ins,

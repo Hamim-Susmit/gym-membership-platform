@@ -20,20 +20,6 @@ Premium-grade Node.js + Express API with Prisma/PostgreSQL.
 - `POST /auth/logout`
 - `GET /users/me`
 - `GET /locations`
-- `GET /classes`
-- `GET /bookings`
-- `POST /bookings`
-- `PATCH /bookings/:bookingId`
-- `GET /checkins`
-- `GET /trainer/clients`
-- `GET /trainer/sessions`
-- `GET /notifications`
-- `PATCH /notifications/:notificationId`
-- `GET /admin/announcements`
-- `POST /admin/announcements`
-- `GET /admin/reports/admin-stats`
-- `GET /members`
-- `GET /trainers`
 
 ## Roles
 

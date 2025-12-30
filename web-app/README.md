@@ -17,8 +17,7 @@ src/
 
 ## Running locally
 
-1. `cp .env.example .env.local`
-2. `npm install`
-3. `npm run dev`
+1. `npm install`
+2. `npm run dev`
 
-Update `NEXT_PUBLIC_API_BASE_URL` in `.env.local` with your API base URL.
+Update `src/api/endpoints.ts` with your API base URL.
