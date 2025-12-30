@@ -1,0 +1,19 @@
+name: e2e-smoke-test
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    env:
+      API_URL: ${{ secrets.SMOKE_API_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: node ./scripts/smoke-test.js
+        env:
+          SMOKE_API_URL: ${{ secrets.SMOKE_API_URL }}
